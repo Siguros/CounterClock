@@ -592,7 +592,7 @@ double s2[param->nOutput];  // Output delta from hidden layer to the output laye
 									int a = param->PulseNum;
 									for (int i = 0; i < param->NumcellPerSynapse; i++) {
 										
-										if (((numTrain % PulseRate) < a * (i + 1)) && ((numTrain % PulseRate) >= a * i)) {
+										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
 											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
 										}
 									}
@@ -959,7 +959,7 @@ double s2[param->nOutput];  // Output delta from hidden layer to the output laye
 									int a = param->PulseNum;
 									for (int i = 0; i < param->NumcellPerSynapse; i++) {
 										
-										if (((numTrain % PulseRate) < a * (i + 1)) && ((numTrain % PulseRate) >= a * i)) {
+										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
 											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
 										}
 									}
