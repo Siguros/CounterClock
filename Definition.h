@@ -47,7 +47,7 @@ Input(param->numMnistTrainImages, std::vector<double>(param->nInput));
 /* Outputs of training set */
 std::vector< std::vector<double> >
 Output(param->numMnistTrainImages, std::vector<double>(param->nOutput));
-
+int counter=0;
 /* Weights from input to hidden layer */
 std::vector< std::vector<double> >
 weight1(param->nHide, std::vector<double>(param->nInput));
