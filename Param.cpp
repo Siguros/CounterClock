@@ -86,7 +86,9 @@ Param::Param() {
 	NCellmode = true;
 	PulseOperate = false;
 	PulseNum =1; //default pulsenum=1;
-	counterlength = 1; 
+	counterlength = 3; 
+	PotenCounterlength = 3;
+	DepCounterlength = 5; 
 	CounterOperate = true;
 }
 

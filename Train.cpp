@@ -535,71 +535,34 @@ double s2[param->nOutput];  // Output delta from hidden layer to the output laye
 							if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(arrayIH->cell[jj][k])) {	// Analog eNVM
 								//weight1[jj][k] += deltaWeight1[jj][k];
 								//int count = 0;
-								if (param->NCellmode) {
-									
-								
-								}
 										if (param->NCellmode) {
 									if(param->CounterOperate){
-										
-											if(counter <= 20){
-													//std::cout << countt << std::endl;
-										int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-										int a = param->PulseNum;
-										for (int i = 0; i < param->NumcellPerSynapse; i++) {
-											if (((batchSize % PulseRate) < a*(i+1)) && ((batchSize % PulseRate) >= a*i)) {
-												//countt += 1;
-												arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true, i);
-												//std::cout << countt << std::endl;
-											}
-										}
-											}
-											else if(20< counter && counter <= 30){ /*enable weight update*/
-											if((counter*numTrain+batchSize) % param->counterlength == 2 ){
-											 	//no depression
-												// std::cout << counter << std::endl;
-											}
-											else{
-													//std::cout << countt << std::endl;
-										int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-										int a = param->PulseNum;
-										for (int i = 0; i < param->NumcellPerSynapse; i++) {
-											if (((batchSize % PulseRate) < a*(i+1)) && ((batchSize % PulseRate) >= a*i)) {
-												//countt += 1;
-												arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true, i);
-												//std::cout << countt << std::endl;
-											}
-										}
-											}
-											}
-											else{
-												if((counter*numTrain+batchSize)% param->counterlength == 0){
-														//std::cout << countt << std::endl;
-										int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-										int a = param->PulseNum;
-										for (int i = 0; i < param->NumcellPerSynapse; i++) {
-											if (((batchSize % PulseRate) < a*(i+1)) && ((batchSize % PulseRate) >= a*i)) {
-												//countt += 1;
-												arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true, i);
-												//std::cout << countt << std::endl;
-											}
-										}
-												}
-											}
-										}
-										else{	
-											int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-									int a = param->PulseNum;
-									for (int i = 0; i < param->NumcellPerSynapse; i++) {
+									if(deltaWeight1[jj][k] > 0){ //poten clock
+												int PulseRate = param->NumcellPerSynapse * param->PulseNum;
+												int a = param->PulseNum;
+							    	for (int i = 0; i < param->NumcellPerSynapse; i++) {
 										
 										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
-											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
+											if ((batchSize % param->PotenCounterlength) == 0) {
+											arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true, i);
+										}
 										}
 									}
-
+												}
+												else{ // dep clock
+													int PulseRate = param->NumcellPerSynapse * param->PulseNum;
+												int a = param->PulseNum;
+							    	for (int i = 0; i < param->NumcellPerSynapse; i++) {
+										
+										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
+											if ((batchSize % param->DepCounterlength ) == 0) {
+											arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true, i);
 										}
-								
-								}
+										}
+									}
+												}	
+									}
+									}
 								else {
 									arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true, 0);
 								}
@@ -914,45 +877,69 @@ double s2[param->nOutput];  // Output delta from hidden layer to the output laye
 							if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(arrayHO->cell[jj][k])) { // Analog eNVM
 								//weight2[jj][k] += deltaWeight2[jj][k];
 								if (param->NCellmode) {
-									if(param->CounterOperate){
-											if(counter <= 20){
+											if(param->CounterOperate){
+												if(deltaWeight2[jj][k] > 0){ //poten clock
 												int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-									int a = param->PulseNum;
-									for (int i = 0; i < param->NumcellPerSynapse; i++) {
+												int a = param->PulseNum;
+							    	for (int i = 0; i < param->NumcellPerSynapse; i++) {
 										
 										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
+											if ((batchSize % param->PotenCounterlength) == 0) {
 											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
 										}
-									}
-											}
-											else if(20< counter && counter <=30){ /*enable weight update*/
-											if((counter*numTrain+batchSize) % param->counterlength == 2 ){
-											 	//no depression
-
-											}
-											else{
-												int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-									int a = param->PulseNum;
-									for (int i = 0; i < param->NumcellPerSynapse; i++) {
-										
-										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
-											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
-										}
-									}
-											}
-											}
-											else{
-												if((counter*numTrain+batchSize) % param->counterlength == 0){
-													int PulseRate = param->NumcellPerSynapse * param->PulseNum;
-									int a = param->PulseNum;
-									for (int i = 0; i < param->NumcellPerSynapse; i++) {
-										
-										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
-											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
 										}
 									}
 												}
-											}
+												else{ // dep clock
+													int PulseRate = param->NumcellPerSynapse * param->PulseNum;
+												int a = param->PulseNum;
+							    	for (int i = 0; i < param->NumcellPerSynapse; i++) {
+										
+										if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
+											if ((batchSize % param->DepCounterlength ) == 0) {
+											arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
+										}
+										}
+									}
+												}
+									// 	if(counter <= 20){
+									// 			int PulseRate = param->NumcellPerSynapse * param->PulseNum;
+									// int a = param->PulseNum;
+									// for (int i = 0; i < param->NumcellPerSynapse; i++) {
+										
+									// 	if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
+									// 		arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
+									// 	}
+									// }
+									// 		}
+									// 		else if(20< counter && counter <=30){ /*enable weight update*/
+									// 		if((counter*numTrain+batchSize) % param->counterlength == 2 ){
+									// 		 	//no depression
+
+									// 		}
+									// 		else{
+									// 			int PulseRate = param->NumcellPerSynapse * param->PulseNum;
+									// int a = param->PulseNum;
+									// for (int i = 0; i < param->NumcellPerSynapse; i++) {
+										
+									// 	if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
+									// 		arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
+									// 	}
+									// }
+									// 		}
+									// 		}
+									// 		else{
+									// 			if((counter*numTrain+batchSize) % param->counterlength == 0){
+									// 				int PulseRate = param->NumcellPerSynapse * param->PulseNum;
+									// int a = param->PulseNum;
+									// for (int i = 0; i < param->NumcellPerSynapse; i++) {
+										
+									// 	if (((batchSize % PulseRate) < a * (i + 1)) && ((batchSize % PulseRate) >= a * i)) {
+									// 		arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true, i);
+									// 	}
+									// }
+									// 			}
+									// 		}	
 										}
 										else{	
 											int PulseRate = param->NumcellPerSynapse * param->PulseNum;

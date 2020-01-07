@@ -89,6 +89,8 @@ public:
 	bool PulseOperate; // modifing # of pulses / 1 cell
 	int PulseNum;
 	int counterlength;
+	int PotenCounterlength;
+	int DepCounterlength;
 	bool CounterOperate;
 };
 
